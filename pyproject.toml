@@ -1,0 +1,49 @@
+[project]
+name = "html2pdf"
+version = "0.1.0"
+description = "A FastAPI-based service that converts HTML content or URLs to PDF documents using Playwright."
+readme = "README.md"
+authors = [
+    { name = "Ben Selleslagh", email = "ben@dataframe.be" } 
+]
+requires-python = ">=3.13"
+dependencies = [
+    "colorlog>=6.9.0",
+    "fastapi[standard]>=0.115.12",
+    "playwright>=1.51.0",
+    "pre-commit>=4.2.0",
+    "ruff>=0.11.2",
+]
+
+[project.scripts]
+html2pdf = "html2pdf:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.ruff]
+lint.select = [
+    "E",    # pycodestyle
+    "F",    # pyflakes
+    "I",    # isort
+    "D",    # pydocstyle
+    "D401", # First line should be in imperative mood
+    "T201",
+    "UP",
+]
+lint.ignore = [
+    "UP006",
+    "UP007",
+    "UP035",
+    "D417",
+    "E501",
+    "D100",
+    "D203",
+    "D213",
+]
+
+exclude = [
+    "examples/*",
+    "tests/*",
+]
