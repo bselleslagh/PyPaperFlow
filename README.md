@@ -1,17 +1,18 @@
-# HTML2PDF Service
+# PyPaperFlow Service
 
-A FastAPI-based service that converts HTML content or URLs to PDF documents using Playwright.
+A FastAPI-based service that converts URLs, HTML and Word content to PDF documents.
 
 [![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 [![uv](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/uv/main/assets/badge/v0.json)](https://github.com/astral-sh/uv)
-![GitHub License](https://img.shields.io/github/license/bselleslagh/html2pdf)
-![GitHub Release](https://img.shields.io/github/v/release/bselleslagh/html2pdf)
+![GitHub License](https://img.shields.io/github/license/bselleslagh/PyPaperFlow)
+![GitHub Release](https://img.shields.io/github/v/release/bselleslagh/PyPaperFlow)
 ![X (formerly Twitter) Follow](https://img.shields.io/twitter/follow/BenSelleslagh)
 
 ## Features
 
 - Convert HTML content to PDF
 - Convert URLs to PDF
+- Convert Word documents to PDF
 - A4 format with customizable margins
 - Background graphics and colors support
 - Asynchronous processing
@@ -21,8 +22,8 @@ A FastAPI-based service that converts HTML content or URLs to PDF documents usin
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/bselleslagh/html2pdf.git
-cd html2pdf
+git clone https://github.com/bselleslagh/PyPaperFlow.git
+cd PyPaperFlow
 ```
 
 2. Install dependencies using UV:
@@ -49,13 +50,13 @@ uv run pre-commit run --all-files
 ## Docker Installation
 
 ```bash
-docker build -t html2pdf .
-docker run -p 8000:8000 html2pdf
+docker build -t pypaperflow .
+docker run -p 8000:8000 pypaperflow
 ```
 
 ## Usage
 
-The service exposes two endpoints:
+The service exposes three endpoints:
 
 ### Root Endpoint
 
@@ -65,10 +66,10 @@ GET /
 
 Returns a welcome message confirming the service is running.
 
-### Generate PDF Endpoint
+### Convert HTML/URL to PDF Endpoint
 
 ```http
-POST /generate-pdf
+POST /convert-html
 ```
 
 Request body:
@@ -90,18 +91,50 @@ Response:
 }
 ```
 
+### Convert Word to PDF Endpoint
+
+```http
+POST /convert-word
+```
+
+Request body:
+```json
+{
+    "content": "string"  // base64 encoded Word document
+}
+```
+
+Response:
+```json
+{
+    "pdf": "base64_encoded_string",
+    "message": "Word document converted to PDF successfully"
+}
+```
+
 ## Example
 
 ```python
 import requests
+import base64
 
-url = "http://localhost:8000/generate-pdf"
+# Convert HTML to PDF
+url = "http://localhost:8000/convert-html"
 payload = {
     "content": "<h1>Hello World</h1>",
     "type": "html"
 }
-
 response = requests.post(url, json=payload)
+pdf_data = response.json()["pdf"]
+
+# Convert Word to PDF
+with open("document.docx", "rb") as word_file:
+    word_base64 = base64.b64encode(word_file.read()).decode("utf-8")
+
+payload = {
+    "content": word_base64
+}
+response = requests.post("http://localhost:8000/convert-word", json=payload)
 pdf_data = response.json()["pdf"]
 ```
 

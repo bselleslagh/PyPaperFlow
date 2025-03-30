@@ -29,7 +29,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 # Copy the project into the intermediate image
-COPY src/html2pdf/ /app/src/html2pdf/
+COPY src/pypaperflow/ /app/src/pypaperflow/
 COPY pyproject.toml /app/pyproject.toml
 COPY uv.lock /app/uv.lock
 COPY README.md /app/README.md
@@ -42,4 +42,4 @@ RUN uv sync --frozen --no-cache --no-dev
 RUN uv run playwright install
 
 # Run the application.
-CMD ["/app/.venv/bin/fastapi", "run", "/app/src/html2pdf/main.py", "--port", "8000", "--host", "0.0.0.0"]
+CMD ["/app/.venv/bin/fastapi", "run", "/app/src/pypaperflow/main.py", "--port", "8000", "--host", "0.0.0.0"]

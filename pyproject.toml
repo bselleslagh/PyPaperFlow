@@ -1,5 +1,5 @@
 [project]
-name = "html2pdf"
+name = "PyPaperFlow"
 version = "0.1.0"
 description = "A FastAPI-based service that converts HTML content or URLs to PDF documents using Playwright."
 readme = "README.md"
@@ -10,13 +10,14 @@ requires-python = ">=3.13"
 dependencies = [
     "colorlog>=6.9.0",
     "fastapi[standard]>=0.115.12",
+    "mammoth>=1.9.0",
     "playwright>=1.51.0",
     "pre-commit>=4.2.0",
     "ruff>=0.11.2",
 ]
 
 [project.scripts]
-html2pdf = "html2pdf:main"
+pypaperfow = "pypaperfow:main"
 
 [build-system]
 requires = ["hatchling"]
@@ -46,4 +47,9 @@ lint.ignore = [
 exclude = [
     "examples/*",
     "tests/*",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "ipykernel>=6.29.5",
 ]

@@ -3,13 +3,13 @@ from typing import Literal
 
 from playwright.async_api import async_playwright
 
-from html2pdf.logger import setup_logger
+from pypaperflow.logger import setup_logger
 
 logger = setup_logger(__name__)
 
 
 async def create_pdf_from_html(
-    content: str, type: Literal["html", "url"] = "html"
+    content: str, type: Literal["html", "url"] = "html", output_path: str = None
 ) -> str:
     """Create an A4 PDF from an HTML string using Chromium via Playwright and returns it as a base64 encoded string.
 
@@ -54,6 +54,11 @@ async def create_pdf_from_html(
                 # footer_template="<div></div>", # HTML template for footer
                 # display_header_footer=False # Set to True if using templates
             )
+
+            if output_path:
+                with open(output_path, "wb") as f:
+                    f.write(pdf_bytes)
+                return None
 
             # Convert bytes to base64 string
             base64_pdf = base64.b64encode(pdf_bytes).decode("utf-8")
