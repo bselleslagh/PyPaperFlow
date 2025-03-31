@@ -23,6 +23,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxcb1 \
     libxkbcommon0 \
     libasound2 \
+    libcups2 \
+    libpango-1.0-0 \
+    libcairo2 \
     && rm -rf /var/lib/apt/lists/*
 
 # Install uv.
